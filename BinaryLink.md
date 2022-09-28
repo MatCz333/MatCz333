@@ -19,7 +19,23 @@ New-VM -Name Win10VM -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath .\VMs\Win1
 ```
 3.	Configure IP address on Server	
 
+```powershell
 
+Get-Netadapter
+
+$ipParams = @{
+InterfaceIndex = 8
+IPAddress = "192.168.20.10"
+DefaultGateway =  "192.168.2.1"
+PrefixLength = 24
+AddressFamily = "IPv4"
+}
+
+New-NetIPAddress @ipParams
+
+Set-DNSClientServerAddress –InterfaceIndex 8 –ServerAddresses 192.168.2.11,10.1.2.11
+Set-NetIPInterface -InterfaceAlias Ethernet0 -Dhcp Enabled
+```
 (		                                           
 IP 		          192.168.20.10 
 Subnet mask 		255.255.255.0 
