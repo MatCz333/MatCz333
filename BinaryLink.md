@@ -1,12 +1,20 @@
-```powershell
-	Get-Command -Name Clear-Host
 
-```
 
 
 
 1.	Create a VM- Windows Server 2012 or 2016 
-2.	Configure IP address on Server	
+
+Install Hyper V on Windows 10 Pro. 
+```powershell
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+```
+Create new VM 
+```powershell
+New-VM -Name Win10VM -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath .\VMs\Win10.vhdx -Path .\VMData -Generation 2 -Switch ExternalSwitch
+```
+3.	Configure IP address on Server	
+
+
 (		                                           
 IP 		          192.168.20.10 
 Subnet mask 		255.255.255.0 
