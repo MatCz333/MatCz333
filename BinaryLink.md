@@ -31,12 +31,32 @@ $VMName = "VMNAME"
 
  New-VM @VM
 ```
-Add new images and change boot order for your new VMs
-```powershell
-Add-VMDvdDrive -VMName <VMName> -Path D:\ISOs\disc1.iso
+Add new images and change boot order for your new VMs in ISE
 
-Set-VMFirmware <VMName> -BootOrder
+```powershell
+Add-VMDvdDrive -VMName LAB-SVR -Path C:\WindowsServer2016.iso
+
+$VmName = [string]"LAB-CLI"
+
+$win10g2 = Get-VMFirmware $VmName
+
+$hddrive = $win10g2.BootOrder[0]
+
+$pxe = $win10g2.BootOrder[1]
+
+$dvddrive = $win10g2.BootOrder[2]
+
+Set-VMFirmware -VMName $VmName -BootOrder $dvddrive,$hddrive,$pxe
 ```
+
+Start and connect to the machines 
+```powershell
+Start-VM -Name LAB-SVR
+$s = New-PSSession -ComputerName LAB-SVR
+Enter-PSSession -Session $s
+```
+
+
 3.	Configure IP address on Server	
 
 ```powershell
