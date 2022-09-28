@@ -1,7 +1,9 @@
 Binary Test Practice
 
 ```powershell
+
 Get-Command -Name Clear-Host
+
 ```
 
 1.	Create a VM- Windows Server 2012 or 2016 
