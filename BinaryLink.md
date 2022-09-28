@@ -13,9 +13,23 @@ Create virtual switch
 New-VMSwitch -name ExternalSwitch  -NetAdapterName Ethernet -AllowManagementOS $true
 ```
 
-Create new VM 
-```powershell
-New-VM -Name Win10VM -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath .\VMs\Win10.vhdx -Path .\VMData -Generation 2 -Switch ExternalSwitch
+Create new VM in PowerShell ISE
+
+```powershell 
+$VMName = "VMNAME"
+
+ $VM = @{
+     Name = $VMName
+     MemoryStartupBytes = 2147483648
+     Generation = 2
+     NewVHDPath = "C:\Virtual Machines\$VMName\$VMName.vhdx"
+     NewVHDSizeBytes = 10,737,418,240
+     BootDevice = "VHD"
+     Path = "C:\Virtual Machines\$VMName"
+     SwitchName = (Get-VMSwitch).Name
+ }
+
+ New-VM @VM
 ```
 3.	Configure IP address on Server	
 
