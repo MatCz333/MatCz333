@@ -1,5 +1,6 @@
 Binary Test Practice
-``` PowerShell ```
+
+``` Set-Content ```
 
 1.	Create a VM- Windows Server 2012 or 2016 
 2.	Configure IP address on Server	
