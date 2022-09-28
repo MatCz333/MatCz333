@@ -36,8 +36,7 @@ New-NetIPAddress @ipParams
 Set-DNSClientServerAddress –InterfaceIndex 8 –ServerAddresses 192.168.2.11,10.1.2.11
 Set-NetIPInterface -InterfaceAlias Ethernet0 -Dhcp Enabled
 ```
-(		                                           
-IP 		          192.168.20.10 
+(IP 		          192.168.20.10 
 Subnet mask 		255.255.255.0 
 Gateway         192.168.20.1
 Pref DNS server              127.0.0.1 (later change it to 	192.168.20.10)
