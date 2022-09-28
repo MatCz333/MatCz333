@@ -1,6 +1,6 @@
 Binary Test Practice
 
-```powershell 
+```powershell
 Get-Command -Name Clear-Host
 ```
 
