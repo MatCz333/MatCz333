@@ -44,12 +44,16 @@ Set-NetIPInterface -InterfaceAlias Ethernet0 -Dhcp Enabled
 3.	Install Active directory Domain services
 Together with DNS, DHCP through Add roles and features 
  
- 
- 
-
+ ```powershel
+ Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
+ Install-WindowsFeature DNS -IncludeManagementTools
+ Install-WindowsFeature DHCP -IncludeManagementTools
+ ```
 
 4.	After the installation, Promote server to  Domain Controller 
- 
+```powershell
+Install-Addsdomaincontroller -Installdns -Domainname test.local
+```
 a.	Add a new forest – kan.com
 b.	Select minimum functional level domain- Windows server 2012 R2
  
