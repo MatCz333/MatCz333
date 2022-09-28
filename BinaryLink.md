@@ -5,16 +5,16 @@
 1.	Create a VM- Windows Server 2012 or 2016 
 
 Install Hyper V on Windows 10 Pro. 
-```
+```powershell
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 ```
 Create virtual switch
-```
+```powershel
 New-VMSwitch -name ExternalSwitch  -NetAdapterName Ethernet -AllowManagementOS $true
 ```
 
 Create new VM 
-```
+```powershell
 New-VM -Name Win10VM -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath .\VMs\Win10.vhdx -Path .\VMData -Generation 2 -Switch ExternalSwitch
 ```
 3.	Configure IP address on Server	
