@@ -26,10 +26,16 @@ $VMName = "VMNAME"
      NewVHDSizeBytes = 10,737,418,240
      BootDevice = "VHD"
      Path = "C:\Virtual Machines\$VMName"
-     SwitchName = (Get-VMSwitch).Name
+     SwitchName = [string]"ExternalSwitch"
  }
 
  New-VM @VM
+```
+Add new images and change boot order for your new VMs
+```powershell
+Add-VMDvdDrive -VMName <VMName> -Path D:\ISOs\disc1.iso
+
+Set-VMFirmware <VMName> -BootOrder
 ```
 3.	Configure IP address on Server	
 
