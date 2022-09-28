@@ -52,22 +52,23 @@ Together with DNS, DHCP through Add roles and features
 
 4.	After the installation, Promote server to  Domain Controller 
 ```powershell
-Install-Addsdomaincontroller -Installdns -Domainname test.local
+Install-Addsdomaincontroller 
 ```
 a.	Add a new forest – kan.com
+
+```powershell
+Install-ADDSForest -DomainName "corp.contoso.com" -DatabasePath "d:\NTDS" -SysvolPath "d:\SYSVOL" -LogPath "e:\Logs" -DomainNetbiosName "name" 
+```
+
 b.	Select minimum functional level domain- Windows server 2012 R2
  
- 
-
 c.	NetBIOS name >automatically shows > kan
+
 d.	Specify ADDS Log, Sysvol folder (you can leave it to the default C:\
  
  
 You can see the script for the options you selected
 e.	Install the prerequisite screen click next
-f.	 
- 
-g.	
 h.	It will prompt you to restart automatically
 i.	Login as domain/administrator (kan/administrator) with password
 5.	 
