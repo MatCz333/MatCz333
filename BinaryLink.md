@@ -3,11 +3,7 @@
 
 ```
 
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
-```
+
 
 1.	Create a VM- Windows Server 2012 or 2016 
 2.	Configure IP address on Server	
