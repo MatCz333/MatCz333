@@ -119,7 +119,7 @@ Create user using ISE
 $password = ConvertTo-SecureString "passwd123" –AsPlainText –Force
 $user = "userxyz"
 New-ADUser -Name $user -AccountPassword $password
-Set-ADUser $user -PasswordNeverExpires $true -ChangePasswordAtLogon:$false
+Set-ADUser $user -PasswordNeverExpires $false -ChangePasswordAtLogon:$false
 
 Script to create users from CSV file 
 
@@ -143,6 +143,10 @@ Line 3
 
 6.	Join the client (CL-01) computer to the Domain controller 
 a.	Ping and text whether you can able to reach the DC or not from the client
+
+```powershell
+Add-Computer –DomainName "YourDomainName"  -Restart
+```
 
 7.	Configure DNS  with Forward look up zone and reverse look up zone for ADF.com
 a.	Create necessary A record in forward lookup one and pointer record in reverse lookup zone
