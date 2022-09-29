@@ -182,9 +182,9 @@ iii.	Activate the scope
 ```powershell
 Add-DhcpServerV4Scope -Name "DHCP Scope" -StartRange 192.168.1.150 -EndRange 192.168.1.200 -SubnetMask 255.255.255.0
 Set-DhcpServerV4OptionValue -DnsServer 192.168.1.10 -Router 192.168.1.1
-Set-DhcpServerv4Scope -ScopeId 192.168.1.10 -LeaseDuration 1.00:00:00
 Add-Dhcpserverv4ExclusionRange -ScopeId 10.1.1.0 -StartRange 10.1.1.1 -EndRange 10.1.1.10
 Add-DhcpServerv4Reservation -ScopeId 10.10.10.0 -IPAddress 10.10.10.8  -Description "Reservation for Printer"
+Set-DhcpServerv4Scope -ComputerName "dhcpserver.contoso.com" -ScopeId 10.10.10.0 -Name "Ext Lab Net VLAN100" -State Active -LeaseDuration 4.00:00:00
 Restart-service dhcpserver
 ```
 
@@ -192,4 +192,9 @@ Restart-service dhcpserver
 a.	IP address from DHCP
 b.	Resolving DNS 
 10.	Create 2 OU’s Navy , and Army add 2 users to army and add 1 user to navy
+
+```powershell
+New-ADOrganizationalUnit -Name "UserAccounts" -Path "DC=FABRIKAM,DC=COM"
+Get-ADUser -Identity Tira.Elsa | Move-ADObject -TargetPath "OU=HR,DC=SHELLPRO,DC=LOCAL"
+```
 a.	Create a GPO to hide the Date and time from system tray and roll out to Army 
