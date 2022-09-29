@@ -13,6 +13,9 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 Create virtual switch
 ```powershel
 New-VMSwitch -name ExternalSwitch  -NetAdapterName Ethernet -AllowManagementOS $true
+
+Can also use "Default Switch" if the communication is only itnernal 
+
 ```powershell 
 $VMName = "VMNAME"
 
