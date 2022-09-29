@@ -22,13 +22,13 @@ $VMName = "VMNAME"
 
  $VM = @{
      Name = $VMName
-     MemoryStartupBytes = 2147483648
+     MemoryStartupBytes = 4GB
      Generation = 2
      NewVHDPath = "C:\Virtual Machines\$VMName\$VMName.vhdx"
-     NewVHDSizeBytes = 10,737,418,240
+     NewVHDSizeBytes = 60GB
      BootDevice = "VHD"
      Path = "C:\Virtual Machines\$VMName"
-     SwitchName = [string]"ExternalSwitch"
+     SwitchName = "Default Switch"
  }
 
  New-VM @VM
