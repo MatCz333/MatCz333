@@ -156,6 +156,22 @@ Add-Computer –DomainName "YourDomainName"  -Restart
 7.	Configure DNS  with Forward look up zone and reverse look up zone for ADF.com
 a.	Create necessary A record in forward lookup one and pointer record in reverse lookup zone
 b.	From the client computer you should be able to resolve the IP address when the user type with the help of NSLOOKUP <ADF.com>
+
+To create forwarding zone
+To create A record 
+To create reverse lookup pointer
+
+```powershell
+Add-DnsServerPrimaryZone -Name woshub.com -ReplicationScope "Forest" –PassThru
+Add-DnsServerResourceRecordA -Name ber-rds1 -IPv4Address 192.168.100.33 -ZoneName woshub.com
+Add-DNSServerResourceRecordPTR -ZoneName 100.168.192.in-addr.arpa -Name 33 -PTRDomainName ber-rds1.woshub.com
+``
+
+To create reverse lookup
+```powershell
+Add-DnsServerPrimaryZone -NetworkID “192.168.20.0/24” -ReplicationScope “Domain” 
+```
+
 8.	Configure DHCP 
 a.	Give a Range name 
 i.	Reserve  3 IPS for special objects ( like printer and other devices) example 10,11,12
