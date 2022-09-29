@@ -77,7 +77,8 @@ AddressFamily = "IPv4"
 New-NetIPAddress @ipParams
 
 Set-DNSClientServerAddress –InterfaceIndex 8 –ServerAddresses 192.168.2.11,10.1.2.11
-Set-NetIPInterface -InterfaceAlias Ethernet0 -Dhcp Enabled
+Rename-Computer
+
 ```
 
 3.	Install Active directory Domain services 
