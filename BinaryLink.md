@@ -164,8 +164,9 @@ To create reverse lookup pointer
 ```powershell
 Add-DnsServerPrimaryZone -Name woshub.com -ReplicationScope "Forest" –PassThru
 Add-DnsServerResourceRecordA -Name ber-rds1 -IPv4Address 192.168.100.33 -ZoneName woshub.com
-Add-DNSServerResourceRecordPTR -ZoneName 100.168.192.in-addr.arpa -Name 33 -PTRDomainName ber-rds1.woshub.com
+Add-DnsServerResourceRecordPtr -Name "17" -ZoneName "0.168.192.in-addr.arpa" -AllowUpdateAny -TimeToLive 01:00:00 -AgeRecord -PtrDomainName "host17.contoso.com"
 ``
+This command adds a type PTR DNS record in the zone named contoso.com. The record maps IP address 192.168.0.17 to the name host17.contoso.com. The command includes the AllowUpdateAny and AgeRecord parameters, and provides a TTL value. Because the command includes the AgeRecord parameter, a DNS server can scavenge this record.
 
 To create reverse lookup
 ```powershell
@@ -177,6 +178,16 @@ a.	Give a Range name
 i.	Reserve  3 IPS for special objects ( like printer and other devices) example 10,11,12
 ii.	Exclude certain IP range (13 to 20)
 iii.	Activate the scope 
+
+```powershell
+Add-DhcpServerV4Scope -Name "DHCP Scope" -StartRange 192.168.1.150 -EndRange 192.168.1.200 -SubnetMask 255.255.255.0
+Set-DhcpServerV4OptionValue -DnsServer 192.168.1.10 -Router 192.168.1.1
+Set-DhcpServerv4Scope -ScopeId 192.168.1.10 -LeaseDuration 1.00:00:00
+Add-Dhcpserverv4ExclusionRange -ScopeId 10.1.1.0 -StartRange 10.1.1.1 -EndRange 10.1.1.10
+Add-DhcpServerv4Reservation -ScopeId 10.10.10.0 -IPAddress 10.10.10.8  -Description "Reservation for Printer"
+Restart-service dhcpserver
+```
+
 9.	From CL01 login with the help of user id you created at DC to verify the connectivity to the domain 
 a.	IP address from DHCP
 b.	Resolving DNS 
