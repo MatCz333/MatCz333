@@ -76,7 +76,6 @@ AddressFamily = "IPv4"
 
 New-NetIPAddress @ipParams
 
-Set-DNSClientServerAddress –InterfaceIndex 8 –ServerAddresses 192.168.2.11,10.1.2.11
 Rename-Computer
 
 ```
