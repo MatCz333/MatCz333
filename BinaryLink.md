@@ -1,20 +1,18 @@
+Internal Binary Exam Practice (project Session 4 A) 
+1.	Create 2 VM  
+a.	Windows server 2012 or 2016  
+b.	Windows 10 machine
 
-
-
-
-1.	Create a VM- Windows Server 2012 or 2016 
+Create new VM in PowerShell ISE
 
 Install Hyper V on Windows 10 Pro. 
+
 ```powershell
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 ```
 Create virtual switch
 ```powershel
 New-VMSwitch -name ExternalSwitch  -NetAdapterName Ethernet -AllowManagementOS $true
-```
-
-Create new VM in PowerShell ISE
-
 ```powershell 
 $VMName = "VMNAME"
 
@@ -57,7 +55,8 @@ Enter-PSSession -Session $s
 ```
 
 
-3.	Configure IP address on Server	
+2.	Configure Static IP address for server and client with your 
+a.	Subnet mask , preferred DNS server 
 
 ```powershell
 
@@ -76,90 +75,57 @@ New-NetIPAddress @ipParams
 Set-DNSClientServerAddress –InterfaceIndex 8 –ServerAddresses 192.168.2.11,10.1.2.11
 Set-NetIPInterface -InterfaceAlias Ethernet0 -Dhcp Enabled
 ```
-- IP 192.168.20.10 
-- Subnet mask 255.255.255.0 
-- Gateway 192.168.20.1
-- Pref DNS server 127.0.0.1 (later change it to 192.168.20.10)
- 
-3.	Install Active directory Domain services
-Together with DNS, DHCP through Add roles and features 
- 
+
+3.	Install Active directory Domain services 
+a.	Optionally you can install DNS and DHCP together while installing ADDS 
+i.	If you install together with DNS and DHCP, You should perform post installation tasks, which is DHCP should have security groups should be created 
+ii.	Also you must promote this server to a domain controller 
+iii.	ADDS is closely coupled with DNS, it works with the help of DNS
+iv.	During the installation it will install GPM
+v.	RSAT and LDS tools 
+
  ```powershel
  Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
  Install-WindowsFeature DNS -IncludeManagementTools
  Install-WindowsFeature DHCP -IncludeManagementTools
  ```
 
-4.	After the installation, Promote server to  Domain Controller 
-```powershell
-Install-Addsdomaincontroller 
-```
-a.	Add a new forest – kan.com
+
+
+4.	After the installation you must promote server to a DC 
+a.	While promoting a DC you create a new forest with a root domain name 
+b.	Example:- you domain name is yourname.com (ADF.com)
+c.	Select minimum functional level domain to Windows server 2012
+d.	Enter the NetBIOS name  for legacy clients 
+e.	Leave the default Sysvol folder path 
+f.	Optionally you can generate the PowerShell script and save it 
+g.	Restart the server after you  promote it to a DC
+After the installation, Promote server to  Domain Controller - Installing new Forest will automatically promote the machine to DC
 
 ```powershell
 Install-ADDSForest -DomainName "corp.contoso.com" -DatabasePath "d:\NTDS" -SysvolPath "d:\SYSVOL" -LogPath "e:\Logs" -DomainNetbiosName "name" 
 ```
 
-b.	Select minimum functional level domain- Windows server 2012 R2
- 
-c.	NetBIOS name >automatically shows > kan
+```powershell
+Restart-Computer
+```
+5.	Create 3 users ( you can use PowerShell or server manager tool ADUC) 
+a.	Make sure that you remove the password change at next logon and password never expires 
 
-d.	Specify ADDS Log, Sysvol folder (you can leave it to the default C:\
- 
- 
-You can see the script for the options you selected
-e.	Install the prerequisite screen click next
-h.	It will prompt you to restart automatically
-i.	Login as domain/administrator (kan/administrator) with password
-5.	 
-6.	Post install DNS click next with the defaults and finalise ok
 
-7.	Go to ADUC to create users 
- 
-a.	Expand your domain
-b.	Right click users details area and create a new user
-c.	Sachin Tendulkar , enter the password , remove the password change at next logon, 
-8.	Configure AD DNS – go to DNS manager 
+6.	Join the client (CL-01) computer to the Domain controller 
+a.	Ping and text whether you can able to reach the DC or not from the client
 
-a.	Expand your domain
-b.	Reverse look up zone>Create a  new pointer record the record should have the name 192.168.20.10  and record type as  pointer , data as dc-01.kan.com
-
-c.	 
-i.	Check the nslookup command to verify because when you install the dns it updates the dns server to 127.0.0.1 so check that and modify 198.168.20.10 
-ii.	Go to network connection or type ncpa.cpl properties and change your preferred DNS server IP to 192.168.20.10 
-iii.	(IP addresses to name)  – Create a zone 
-d.	Type the network id  198.168.20.10
-e.	Dc-01.Kan.com
-9.	Back to DNS Manager
-10.	Forward look up zone 
-a.	At _msdc.kan.com -> double click and select name server>  edit
-b.	Name server> double click> resolve  ok ( dc-01 ip address should display 192.168.20.10
-
-c.	SOA record double click and edit > click resolve
-d.	Last record > double click > under security > select every one > ok
-
-11.	Check at command prompt
-a.	Nslookup
-i.	Should display 192. 168.20.10
-ii.	Dc-01.kan.com
-12.	Next post install DHCP config
-a.	Expand DHCP -> IPV4
-b.	Create a new scope under IPv4 
-c.	Enter the Name for the scope : kan-DHCP
-i.	Range 192.168.20.100 to 192.168.20.254
-ii.	Start 
-iii.	Select, Yes I want to configure this option now 
-iv.	Router default gateway IP address – 192.168.20.1
-v.	Servername –Dc-01 and 
-vi.	enter domain name DNS server  192.168.20.10
-vii.	click resolve ip 
-viii.	Activate the scope
-
-Go to client 
-		Test from client
-		Get IP from DHCP server>
-  Go to network properties obtain ip address from dhcp 
-		Go to the computer properties –Change it to join domain
-						Kan.com 
-						Enter the credentials 
-							Userid / password of administrator
+7.	Configure DNS  with Forward look up zone and reverse look up zone for ADF.com
+a.	Create necessary A record in forward lookup one and pointer record in reverse lookup zone
+b.	From the client computer you should be able to resolve the IP address when the user type with the help of NSLOOKUP <ADF.com>
+8.	Configure DHCP 
+a.	Give a Range name 
+i.	Reserve  3 IPS for special objects ( like printer and other devices) example 10,11,12
+ii.	Exclude certain IP range (13 to 20)
+iii.	Activate the scope 
+9.	From CL01 login with the help of user id you created at DC to verify the connectivity to the domain 
+a.	IP address from DHCP
+b.	Resolving DNS 
+10.	Create 2 OU’s Navy , and Army add 2 users to army and add 1 user to navy
+a.	Create a GPO to hide the Date and time from system tray and roll out to Army 
