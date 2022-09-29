@@ -118,13 +118,16 @@ a.	Make sure that you remove the password change at next logon and password neve
 
 Create user using ISE 
 
+```powershell
 $password = ConvertTo-SecureString "passwd123" –AsPlainText –Force
 $user = "userxyz"
 New-ADUser -Name $user -AccountPassword $password
 Set-ADUser $user -PasswordNeverExpires $false -ChangePasswordAtLogon:$false
+```
 
 Script to create users from CSV file 
 
+```powershell
 $csvfile = "C:\Path"
 $OU= "ou=unit,dc=domain,dc=com" 
 
@@ -136,6 +139,7 @@ Foreach($i in $users){
 	New-Aduser -Name $i.FirstName -Given $i.FirstName -Surname $i.LastName -DisplayName $DisplayName -Department $i.Department -Path $OU -AccountPassword $SecurePass -Enabled $true
 }
 
+```
 CSV file should have the following structure 
 
 FirstName,LastName,Department,DefaultPassword
