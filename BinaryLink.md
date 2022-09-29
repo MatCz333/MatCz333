@@ -84,13 +84,11 @@ iii.	ADDS is closely coupled with DNS, it works with the help of DNS
 iv.	During the installation it will install GPM
 v.	RSAT and LDS tools 
 
- ```powershel
+ ```powershell
  Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
  Install-WindowsFeature DNS -IncludeManagementTools
  Install-WindowsFeature DHCP -IncludeManagementTools
  ```
-
-
 
 4.	After the installation you must promote server to a DC 
 a.	While promoting a DC you create a new forest with a root domain name 
@@ -100,6 +98,7 @@ d.	Enter the NetBIOS name  for legacy clients
 e.	Leave the default Sysvol folder path 
 f.	Optionally you can generate the PowerShell script and save it 
 g.	Restart the server after you  promote it to a DC
+
 After the installation, Promote server to  Domain Controller - Installing new Forest will automatically promote the machine to DC
 
 ```powershell
@@ -112,6 +111,32 @@ Restart-Computer
 5.	Create 3 users ( you can use PowerShell or server manager tool ADUC) 
 a.	Make sure that you remove the password change at next logon and password never expires 
 
+Create user using ISE 
+
+$password = ConvertTo-SecureString "passwd123" –AsPlainText –Force
+$user = "userxyz"
+New-ADUser -Name $user -AccountPassword $password
+Set-ADUser $user -PasswordNeverExpires $true -ChangePasswordAtLogon:$false
+
+Script to create users from CSV file 
+
+$csvfile = "C:\Path"
+$OU= "ou=unit,dc=domain,dc=com" 
+
+$users= Import-CSV $csvfile
+
+Foreach($i in $users){
+	$DisplayName = $i.FirstName + " " + $i.LastName
+	$SecurePass = ConvertTo-SecureString $i.DefaultPassword -AsPlainText -Force
+	New-Aduser -Name $i.FirstName -Given $i.FirstName -Surname $i.LastName -DisplayName $DisplayName -Department $i.Department -Path $OU -AccountPassword $SecurePass -Enabled $true
+}
+
+CSV file should have the following structure 
+
+FirstName,LastName,Department,DefaultPassword
+Name,LastName,Dept,Password 
+Line 3
+...
 
 6.	Join the client (CL-01) computer to the Domain controller 
 a.	Ping and text whether you can able to reach the DC or not from the client
